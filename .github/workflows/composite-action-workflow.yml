@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run Standard Python Steps
-        uses: ./github/actions
+        uses: ./github/actions/standard-python
         with:
           PYTHON_VERSION: '3.8'
           RUN_UNIT_TESTS: 'true'

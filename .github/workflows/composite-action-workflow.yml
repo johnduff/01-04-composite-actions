@@ -5,10 +5,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      # REPLACE THE FOLLOWING WITH THE PROPER VALUES
-      # - YOUR_GITHUB_USER_NAME
-      # - YOUR_COMPOSITE_ACTION_REPO_NAME
-      - uses: .github/actions/action.yml@main
+      - uses: actions/checkout@v3
+      - name: Run Standard Python Steps
+        uses: ./github/actions/standard-python
         with:
-          PYTHON_VERSION: 3.8
+          PYTHON_VERSION: '3.8'
+          RUN_UNIT_TESTS: 'true'

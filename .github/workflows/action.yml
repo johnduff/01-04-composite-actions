@@ -19,7 +19,7 @@ runs:
     - uses: actions/checkout@v2
     
     - name: Set up Python ${{ inputs.PYTHON_VERSION }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ inputs.PYTHON_VERSION }}
     
@@ -33,23 +33,22 @@ runs:
     - name: Identify project files
       id: project_files
       run: |
-        if [ -d "./tests" ];
-        then
-          echo "::set-output name=files::*.py tests/*.py"
+        if [ -d "./tests" ]; then
+          echo "files=*.py tests/*.py" >> "$GITHUB_OUTPUT"
         else
-          echo "::set-output name=files::*.py"
-        fi        
+          echo "files=*.py" >> "$GITHUB_OUTPUT"
+        fi
       shell: bash
-    
+        
     - name: flake8
       run: flake8 --ignore=E501,E231 ${{ steps.project_files.outputs.files }}
       shell: bash
-    
+      
     - name: pylint
       run: pylint --errors-only --disable=C0301 --disable=C0326 ${{ steps.project_files.outputs.files }}
       shell: bash
-
+  
     - name: unit tests
-      if: ${{ inputs.RUN_UNIT_TESTS == false }}
+      if: ${{ inputs.RUN_UNIT_TESTS == 'true' }}
       run: python -m unittest --verbose --failfast  
       shell: bash
